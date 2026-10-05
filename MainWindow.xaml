@@ -6,7 +6,28 @@
         xmlns:local="clr-namespace:ModVault"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
-    <Grid>
+    <Grid Margin="15">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
 
+        <!-- Top Bar: Folder Selection -->
+        <StackPanel Orientation="Horizontal" Grid.Row="0" Margin="0,0,0,10">
+            <Button x:Name="SelectFolderButton" 
+                Content="Select Game Folder" 
+                Padding="10,5" 
+                Click="SelectFolderButton_Click" />
+            <TextBlock x:Name="FolderPathTextBlock" 
+                   Text="No folder selected" 
+                   VerticalAlignment="Center" 
+                   Margin="10,0,0,0" 
+                   FontStyle="Italic" />
+        </StackPanel>
+
+        <!-- Mods List -->
+        <ListBox x:Name="ModsListBox" 
+             Grid.Row="1" 
+             DisplayMemberPath="Name" />
     </Grid>
 </Window>

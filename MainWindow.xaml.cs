@@ -1,24 +1,34 @@
-﻿using System.Text;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
+﻿using System.Windows;
+using Microsoft.Win32;
+using ModVault.Services;
 
 namespace ModVault
 {
-    /// <summary>
-    /// Interaction logic for MainWindow.xaml
-    /// </summary>
     public partial class MainWindow : Window
     {
+        private readonly ModScannerService _scannerService;
+
         public MainWindow()
         {
             InitializeComponent();
+            _scannerService = new ModScannerService();
+        }
+
+        private void SelectFolderButton_Click(object sender, RoutedEventArgs e)
+        {
+            var dialog = new OpenFolderDialog
+            {
+                Title = "Select Game Mods Folder"
+            };
+
+            if (dialog.ShowDialog() == true)
+            {
+                string selectedFolder = dialog.FolderName;
+                FolderPathTextBlock.Text = selectedFolder;
+
+                var mods = _scannerService.ScanDirectory(selectedFolder);
+                ModsListBox.ItemsSource = mods;
+            }
         }
     }
 }
