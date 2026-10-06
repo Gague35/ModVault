@@ -1,33 +1,54 @@
-﻿<Window x:Class="ModVault.MainWindow"
-        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:ModVault"
-        mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+﻿<Window
+    x:Class="ModVault.MainWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:ModVault"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    Title="MainWindow"
+    Width="800"
+    Height="450"
+    mc:Ignorable="d">
     <Grid Margin="15">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
-        <!-- Top Bar: Folder Selection -->
-        <StackPanel Orientation="Horizontal" Grid.Row="0" Margin="0,0,0,10">
-            <Button x:Name="SelectFolderButton" 
-                Content="Select Game Folder" 
-                Padding="10,5" 
-                Click="SelectFolderButton_Click" />
-            <TextBlock x:Name="FolderPathTextBlock" 
-                   Text="No folder selected" 
-                   VerticalAlignment="Center" 
-                   Margin="10,0,0,0" 
-                   FontStyle="Italic" />
+        <!--  Top Bar: Folder Selection  -->
+        <StackPanel
+            Grid.Row="0"
+            Margin="0,0,0,10"
+            Orientation="Horizontal">
+            <Button
+                x:Name="SelectFolderButton"
+                Padding="10,5"
+                Click="SelectFolderButton_Click"
+                Content="Select Game Folder" />
+            <TextBlock
+                x:Name="FolderPathTextBlock"
+                Margin="10,0,0,0"
+                VerticalAlignment="Center"
+                FontStyle="Italic"
+                Text="No folder selected" />
         </StackPanel>
 
-        <!-- Mods List -->
-        <ListBox x:Name="ModsListBox" 
-             Grid.Row="1" 
-             DisplayMemberPath="Name" />
+        <!--  Mods List with CheckBox  -->
+        <ListBox x:Name="ModsListBox" Grid.Row="1">
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <StackPanel Margin="5" Orientation="Horizontal">
+                        <CheckBox
+                            VerticalAlignment="Center"
+                            Click="ModCheckBox_Click"
+                            IsChecked="{Binding IsEnabled}" />
+                        <TextBlock
+                            Margin="10,0,0,0"
+                            VerticalAlignment="Center"
+                            Text="{Binding Name}" />
+                    </StackPanel>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
     </Grid>
 </Window>

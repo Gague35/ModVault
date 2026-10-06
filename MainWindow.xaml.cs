@@ -1,6 +1,8 @@
-﻿using System.Windows;
-using Microsoft.Win32;
+﻿using Microsoft.Win32;
+using ModVault.Models;
 using ModVault.Services;
+using System.Windows;
+using System.Windows.Controls;
 
 namespace ModVault
 {
@@ -28,6 +30,21 @@ namespace ModVault
 
                 var mods = _scannerService.ScanDirectory(selectedFolder);
                 ModsListBox.ItemsSource = mods;
+            }
+        }
+
+        private void ModCheckBox_Click(object sender, RoutedEventArgs e)
+        {
+            if (sender is CheckBox checkBox && checkBox.DataContext is Mod mod)
+            {
+                bool success = _scannerService.ToggleModStatus(mod);
+
+                if (!success)
+                {
+                    MessageBox.Show("Failed to toggle mod status.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                    // Revert status in UI if operation failed
+                    checkBox.IsChecked = !checkBox.IsChecked;
+                }
             }
         }
     }
