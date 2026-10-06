@@ -9,11 +9,21 @@ namespace ModVault
     public partial class MainWindow : Window
     {
         private readonly ModScannerService _scannerService;
+        private readonly ConfigService _configService;
+        private AppConfig _config;
 
         public MainWindow()
         {
             InitializeComponent();
             _scannerService = new ModScannerService();
+            _configService = new ConfigService();
+
+            // Load saved folder on startup
+            _config = _configService.LoadConfig();
+            if (!string.IsNullOrEmpty(_config.LastSelectedFolder))
+            {
+                LoadFolder(_config.LastSelectedFolder);
+            }
         }
 
         private void SelectFolderButton_Click(object sender, RoutedEventArgs e)
@@ -26,11 +36,20 @@ namespace ModVault
             if (dialog.ShowDialog() == true)
             {
                 string selectedFolder = dialog.FolderName;
-                FolderPathTextBlock.Text = selectedFolder;
 
-                var mods = _scannerService.ScanDirectory(selectedFolder);
-                ModsListBox.ItemsSource = mods;
+                // Save selected path
+                _config.LastSelectedFolder = selectedFolder;
+                _configService.SaveConfig(_config);
+
+                LoadFolder(selectedFolder);
             }
+        }
+
+        private void LoadFolder(string folderPath)
+        {
+            FolderPathTextBlock.Text = folderPath;
+            var mods = _scannerService.ScanDirectory(folderPath);
+            ModsListBox.ItemsSource = mods;
         }
 
         private void ModCheckBox_Click(object sender, RoutedEventArgs e)
@@ -42,7 +61,6 @@ namespace ModVault
                 if (!success)
                 {
                     MessageBox.Show("Failed to toggle mod status.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                    // Revert status in UI if operation failed
                     checkBox.IsChecked = !checkBox.IsChecked;
                 }
             }
