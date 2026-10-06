@@ -65,5 +65,43 @@ namespace ModVault
                 }
             }
         }
+
+        private void OpenFolder_Click(object sender, RoutedEventArgs e)
+        {
+            if (sender is MenuItem menuItem && menuItem.DataContext is Mod mod)
+            {
+                _scannerService.OpenModFolder(mod);
+            }
+        }
+
+        private void DeleteMod_Click(object sender, RoutedEventArgs e)
+        {
+            if (sender is MenuItem menuItem && menuItem.DataContext is Mod mod)
+            {
+                var result = MessageBox.Show(
+                    $"Are you sure you want to delete '{mod.Name}'?\nThis will move the mod to the Recycle Bin.",
+                    "Confirm Deletion",
+                    MessageBoxButton.YesNo,
+                    MessageBoxImage.Warning
+                );
+
+                if (result == MessageBoxResult.Yes)
+                {
+                    bool success = _scannerService.DeleteMod(mod);
+                    if (success)
+                    {
+                        // Refresh list
+                        if (!string.IsNullOrEmpty(_config.LastSelectedFolder))
+                        {
+                            LoadFolder(_config.LastSelectedFolder);
+                        }
+                    }
+                    else
+                    {
+                        MessageBox.Show("Failed to delete the mod file/folder.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                    }
+                }
+            }
+        }
     }
 }

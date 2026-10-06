@@ -1,5 +1,7 @@
-﻿using System.IO;
+﻿using Microsoft.VisualBasic.FileIO;
 using ModVault.Models;
+using System.Diagnostics;
+using System.IO;
 
 namespace ModVault.Services
 {
@@ -115,6 +117,48 @@ namespace ModVault.Services
             else
             {
                 File.Move(sourcePath, destinationPath);
+            }
+        }
+
+        public bool DeleteMod(Mod mod)
+        {
+            bool exists = mod.IsDirectory ? Directory.Exists(mod.FilePath) : File.Exists(mod.FilePath);
+            if (!exists)
+            {
+                return false;
+            }
+
+            if (mod.IsDirectory)
+            {
+                FileSystem.DeleteDirectory(
+                    mod.FilePath,
+                    UIOption.OnlyErrorDialogs,
+                    RecycleOption.SendToRecycleBin
+                );
+            }
+            else
+            {
+                FileSystem.DeleteFile(
+                    mod.FilePath,
+                    UIOption.OnlyErrorDialogs,
+                    RecycleOption.SendToRecycleBin
+                );
+            }
+
+            return true;
+        }
+
+        public void OpenModFolder(Mod mod)
+        {
+            string folderPath = mod.IsDirectory ? mod.FilePath : Path.GetDirectoryName(mod.FilePath)!;
+
+            if (Directory.Exists(folderPath))
+            {
+                Process.Start(new ProcessStartInfo
+                {
+                    FileName = folderPath,
+                    UseShellExecute = true
+                });
             }
         }
     }

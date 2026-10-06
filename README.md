@@ -22,12 +22,12 @@ The goal of this project is to provide a clean and straightforward way to scan, 
 
 - [x] Directory scanning for installed mods
 - [x] Toggle mods on/off using safe `.disabled` folder renaming
-- [ ] Support for single-file plugins (`.asi`, `.dll`, `.pak`)
-- [ ] Game directory persistence and profile management
+- [x] Support for single-file plugins (`.asi`, `.dll`, `.pak`)
+- [x] Game directory persistence and profile management
 - [ ] Virtual file system / Symlink deployment for clean game installations
 
 ---
 
 ## 📜 License
 
-This project is open-source under the [MIT License](LICENSE.txt).
+This project is open-source under the [MIT License](LICENSE).

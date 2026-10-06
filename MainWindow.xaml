@@ -33,20 +33,45 @@
                 Text="No folder selected" />
         </StackPanel>
 
-        <!--  Mods List with CheckBox  -->
-        <ListBox x:Name="ModsListBox" Grid.Row="1">
+        <!--  Mods List  -->
+        <ListBox
+            x:Name="ModsListBox"
+            Grid.Row="1"
+            HorizontalContentAlignment="Stretch">
+            <ListBox.ItemContainerStyle>
+                <Style TargetType="ListBoxItem">
+                    <Setter Property="ContextMenu">
+                        <Setter.Value>
+                            <ContextMenu>
+                                <MenuItem Click="OpenFolder_Click" Header="Open Folder" />
+                                <Separator />
+                                <MenuItem Click="DeleteMod_Click" Header="Delete Mod (Move to Recycle Bin)" />
+                            </ContextMenu>
+                        </Setter.Value>
+                    </Setter>
+                </Style>
+            </ListBox.ItemContainerStyle>
+
             <ListBox.ItemTemplate>
                 <DataTemplate>
-                    <StackPanel Margin="5" Orientation="Horizontal">
+                    <Grid Margin="5" Background="Transparent">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+
                         <CheckBox
+                            Grid.Column="0"
                             VerticalAlignment="Center"
                             Click="ModCheckBox_Click"
                             IsChecked="{Binding IsEnabled}" />
+
                         <TextBlock
+                            Grid.Column="1"
                             Margin="10,0,0,0"
                             VerticalAlignment="Center"
                             Text="{Binding Name}" />
-                    </StackPanel>
+                    </Grid>
                 </DataTemplate>
             </ListBox.ItemTemplate>
         </ListBox>
